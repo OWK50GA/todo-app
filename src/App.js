@@ -6,9 +6,9 @@ function App() {
 
   const [todos, setTodos] = useState(null);
   const [isBtnCompleted, setIsBtnCompleted] = useState(false);
-
+  const jsonServerUrl = process.env.JSON_SERVER_URL || 'http://localhost:3300/todos';
   const getData = () => {
-    fetch('http://localhost:3300/todos')
+    fetch(`${jsonServerUrl}`)
       .then(res => {
         return res.json();
       })
@@ -23,7 +23,7 @@ function App() {
   },[])
 
   const handleDelete = (id) => {
-    fetch('http://localhost:3300/todos/' + id, {
+    fetch(`${jsonServerUrl}/` + id, {
       method: 'DELETE'
     })
       .then(() => {
@@ -32,7 +32,7 @@ function App() {
   }
 
   const handleComplete = (id) => {
-    fetch('http://localhost:3300/todos/' + id)
+    fetch(`${jsonServerUrl}/` + id)
       .then(res => {
         return res.json();
       })
@@ -45,7 +45,7 @@ function App() {
           return obj;
         })
           .then((obj) => {
-            fetch('http://localhost:3300/todos/' + id, {
+            fetch(`${jsonServerUrl}/` + id, {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(obj) 
@@ -65,7 +65,7 @@ function App() {
         <h1>Todo App</h1>
         <h2>Enter a Task</h2>
         <div className="todo-block">
-          <TodoForm getData={getData} />
+          <TodoForm getData={getData} jsonServerUrl={jsonServerUrl}/>
           {/* <h1>{title}</h1> */}
           <div className="todo-list">
             <h2>Todo-List</h2>

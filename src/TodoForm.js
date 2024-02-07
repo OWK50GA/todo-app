@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const TodoForm = ({getData}) => {
+const TodoForm = ({getData, jsonServerUrl}) => {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -9,7 +9,7 @@ const TodoForm = ({getData}) => {
         e.preventDefault();
         const todo = {title, description, completed: "false"}
 
-        fetch('http://localhost:3300/todos', {
+        fetch(jsonServerUrl, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(todo) 
