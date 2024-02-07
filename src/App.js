@@ -1,23 +1,85 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import TodoForm from "./TodoForm";
+import TodoList from "./TodoList";
 
 function App() {
+
+  const [todos, setTodos] = useState(null);
+  const [isBtnCompleted, setIsBtnCompleted] = useState(false);
+
+  const getData = () => {
+    fetch('http://localhost:3300/todos')
+      .then(res => {
+        return res.json();
+      })
+        .then((data) => {
+          setTodos(data);
+        })
+  }
+
+  useEffect(() => {
+    getData();
+    console.log(todos)
+  },[])
+
+  const handleDelete = (id) => {
+    fetch('http://localhost:3300/todos/' + id, {
+      method: 'DELETE'
+    })
+      .then(() => {
+        getData();
+      })
+  }
+
+  const handleComplete = (id) => {
+    fetch('http://localhost:3300/todos/' + id)
+      .then(res => {
+        return res.json();
+      })
+        .then((obj) => {
+          if (obj.completed === "false") {
+            obj.completed = "true";
+          } else {
+            obj.completed = "false";
+          }
+          return obj;
+        })
+          .then((obj) => {
+            fetch('http://localhost:3300/todos/' + id, {
+            method: 'PATCH',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(obj) 
+            }).then(() => {
+                getData();
+            })
+          });
+  }
+
+  const handleCompletedBtn = () => {
+    isBtnCompleted? setIsBtnCompleted(false):setIsBtnCompleted(true);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="content">
+        <h1>Todo App</h1>
+        <h2>Enter a Task</h2>
+        <div className="todo-block">
+          <TodoForm getData={getData} />
+          {/* <h1>{title}</h1> */}
+          <div className="todo-list">
+            <h2>Todo-List</h2>
+            {isBtnCompleted? <button onClick={handleCompletedBtn}>All My Todos</button>:<button onClick={handleCompletedBtn}>What I have Completed</button>}
+            {/* <button>Todo</button>
+            <button onClick={handleCompletedBtn}>Completed</button> */}
+            {todos && <TodoList 
+            todos={todos}
+            handleDelete={handleDelete}
+            handleComplete={handleComplete}
+            isBtnCompleted={isBtnCompleted}/>}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

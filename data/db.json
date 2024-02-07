@@ -1,0 +1,28 @@
+{
+  "todos": [
+    {
+      "id": "6263",
+      "title": "Take the kids to school",
+      "description": "I intend moving these kids to school since the road is bad and it will obviously make me look like a good father.",
+      "completed": "false"
+    },
+    {
+      "id": "a7ff",
+      "title": "Meet Robin",
+      "description": "Go on a date with Robin to show her my love",
+      "completed": "true"
+    },
+    {
+      "id": "c40a",
+      "title": "Complete the series",
+      "description": "Complete the How I Met Your Mother and rest",
+      "completed": "false"
+    },
+    {
+      "id": "5919",
+      "title": "Complete other series",
+      "description": "Have a go at every other series, try to make sure she's obsessed with HIMYM",
+      "completed": "false"
+    }
+  ]
+}
